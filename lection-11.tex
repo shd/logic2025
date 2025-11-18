@@ -1,0 +1,138 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{cancel}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usepackage{multicol}
+\usetikzlibrary{patterns,calc}
+\usepackage{chronosys}
+\usepackage{proof}
+\usepackage{multirow}
+\usepackage{marvosym}
+\usepackage{hyperref}
+\usepackage{comment}
+\setbeamertemplate{navigation symbols}{}
+%\usetheme{Warsaw}
+
+\newtheorem{thm}{Теорема}[section]
+\newtheorem{dfn}{Определение}[section]
+\newtheorem{lmm}{Лемма}[section]
+\newtheorem{exm}{Пример}[section]
+\newtheorem{snote}{Пояснение}[section]
+
+\newcommand{\divisible}%
+{\mathrel{\lower.2ex%
+\vbox{\baselineskip=0.7ex\lineskiplimit=0pt%
+\kern6pt \hbox{.}\hbox{.}\hbox{.}}%
+}}
+
+\begin{document}
+
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+
+\begin{frame}{Ординалы (порядковые числа) и порядок}
+\begin{exm}\begin{itemize}
+\item Добавить элемент перед бесконечностью: $\mathbb{N}$ и $\mathbb{N}_0$.
+\pause
+$1 + \omega = \omega$. \pause
+\item Добавить элемент после бесконечности $(+\infty)$. \pause $\omega + 1 \ne \omega$ \pause
+%\includegraphics[scale=0.9]{pics/lection-13-ghc}
+\end{itemize}\end{exm}
+\end{frame}
+
+\begin{frame}{Пары и списки}
+\begin{exm}Упорядоченные пары натуральных чисел имеют порядковый тип $\omega^2$.\pause
+
+\begin{center}$\langle 3,5 \rangle < \langle 4,3 \rangle\quad\quad\omega \cdot 3 + 5 < \omega \cdot 4 + 3$.\end{center}\end{exm}\pause
+
+\begin{exm}Списки натуральных чисел --- порядковый тип $\omega^\omega$.
+$$\langle 3,1,4,1,5,9\rangle\quad\quad \omega^5 \cdot 3 + \omega^4 \cdot 1 + \omega^3 \cdot 4 + \omega^2 \cdot 1 + \omega^1 \cdot 5 + 9$$\end{exm}
+\end{frame}
+
+\begin{frame}{Дизъюнктные множества}
+\begin{dfn}Дизъюнктное (разделённое) множество --- множество, элементы которого
+не пересекаются. 
+$$Dj(x) \equiv \forall y.\forall z.(y \in x \with z \in x \with \neg y=z) \rightarrow 
+\neg \exists t.t \in y \with t \in z$$
+\end{dfn}\pause
+
+\begin{exm}Дизъюнктное: $\{\{1,2\},\{\rightarrow\},\{\alpha,\beta,\gamma\}\}$\\ \pause
+Не дизъюнктное: $\{\{1,2\},\{\rightarrow\},\{\alpha,\beta,\gamma,1\}\}$
+\end{exm}
+\end{frame}
+
+\begin{frame}{Прямое произведение множеств}
+\begin{dfn}Прямое произведение дизъюнктного множества $a$ --- 
+множество $\times a$ всех таких множеств $b$, что:
+\begin{itemize}
+\item $b$ пересекается с каждым из элементов множества $a$ в точности в одном элементе
+\item $b$ содержит элементы только из $\cup a$.
+\end{itemize}
+
+$$\forall b .b \in \times a \leftrightarrow (b \subseteq \cup a \with \forall y .y \in a \rightarrow \exists ! x .x \in y \with x \in b)$$
+\end{dfn}\pause
+
+\begin{exm}
+$\times\{\{\triangle,\square\},\{1,2,3\}\} = \{\{\triangle,1\},\{\triangle,2\},\{\triangle,3\},\{\square,1\},\{\square,2\},\{\square,3\}\}$
+\end{exm}
+
+\end{frame}
+
+\begin{frame}{Аксиома выбора}
+\begin{dfn}
+Прямое произведение непустого дизъюнктного множества, 
+не содержащего пустых элементов, непусто.
+
+$$\forall t.Dj (t) \rightarrow 
+(\forall x.x \in t \rightarrow \exists p.p \in x) \rightarrow
+(\exists p.p \in \times t)$$
+\end{dfn}\pause
+
+Альтернативные варианты: любое множество можно вполне упорядочить, \pause любая сюръективная функция имеет частичную обратную, 
+и т.п.
+\begin{dfn}Аксиоматика ZF + аксиома выбора = ZFC\end{dfn}\pause
+\end{frame}
+
+\begin{frame}{Дискуссия вокруг аксиомы выбора}
+\begin{exm}Парадокс Банаха-Тарского: трёхмерный шар равносоставен двум своим копиям.\end{exm}\pause
+\begin{thm}Теорема (Гёдель, 1938): аксиома выбора не добавляет противоречий в ZF.\end{thm}\pause
+\begin{thm}Теорема (Коэн, 1963): аксиома выбора не следует из других аксиом ZF.\end{thm}\pause
+\begin{exm}Односторонние функции: Sha256 и т.п. У Sha256 есть обратная.\end{exm}\pause
+\begin{thm}Теорема Диаконеску: ZFC поверх интуиционистского исчисления предикатов содержит правило исключённого третьего.\end{thm}
+\end{frame}
+
+\begin{frame}{Аксиома фундирования}
+\begin{dfn}Аксиома фундирования. 
+В каждом непустом множестве найдется элемент, не пересекающийся с исходным множеством.
+$$\forall x .x = \varnothing \vee \exists y .y \in x \with \forall z.z \in x \rightarrow z \notin y$$
+\end{dfn}
+
+Иными словами, в каждом множестве есть элемент, минимальный по отношению $(\in)$.
+
+Идея Рассела: каждому множеству припишем \emph{тип} (тип пустого 0, тип множеств 1,
+тип множеств множеств 2 и т.п.). Тогда конструкция невозможна: $\{ x\ |\ x \in x\}$.
+Аксиома фундирования позволяет определить функцию ранга:
+$$rk(x) = \text{upb }\{rk(y)\ |\ y\in x\}$$.
+\end{frame}
+
+\begin{frame}{Схема аксиом подстановки}
+\begin{dfn}Схема аксиом подстановки. 
+Пусть задана некоторая функция f, представимая в исчислении предикатов:
+то есть задана некоторая формула $\phi$, такая, что $f(x) = y$
+тогда и только тогда, когда $\phi(x,y) \with \exists ! z. \phi(x,z)$.
+Тогда для любого множества S существует множество f(S) --- образ
+множества S при отображении f.
+$$\forall s .(\forall x .\forall y_1 .\forall y_2 .x \in s \with \phi (x,y_1) \with \phi
+(x,y_2) \rightarrow y_1=y_2) \rightarrow 
+(\exists t .\forall y .y \in t
+\leftrightarrow \exists x . x \in s \with \phi (x,y)) $$
+\end{dfn}
+\end{frame}
+
+\end{document}
