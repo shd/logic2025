@@ -204,12 +204,11 @@ $\neg \pi(\overline{\ulcorner 1=0 \urcorner})$
 \begin{frame}{Вторая теорема Гёделя о неполноте арифметики}
 \begin{thm}Если Consis доказуем, то формальная арифметика противоречива.\end{thm}
 \begin{proof}(неформально) \pause
-Формулировка 1 теоремы Гёделя о неполноте арифметики: 
+Формулировка первой теоремы Гёделя о неполноте арифметики: 
 <<если Ф.А. непротиворечива, то недоказуемо $\sigma(\overline{\ulcorner\sigma\urcorner})$>>. \pause
 То есть, $\forall p.\neg\omega_1(\overline{\ulcorner\sigma\urcorner},p)$. \pause То есть, 
-если $\text{Consis}$, то $\sigma(\overline{\ulcorner\sigma\urcorner})$. \pause
-То есть, если $\text{Consis}$, то $\sigma(\overline{\ulcorner\sigma\urcorner})$, --- и это можно доказать,
-то есть $\vdash\text{Consis}\rightarrow\sigma(\overline{\ulcorner\sigma\urcorner})$. \pause Однако
+если $\text{Consis}$, то $\sigma(\overline{\ulcorner\sigma\urcorner})$, \pause
+--- и это можно доказать, то есть $\vdash\text{Consis}\rightarrow\sigma(\overline{\ulcorner\sigma\urcorner})$. \pause Однако
 если формальная арифметика непротиворечива, то $\not\vdash\sigma(\overline{\ulcorner\sigma\urcorner})$.
 \end{proof}
 \end{frame}
@@ -246,7 +245,8 @@ $$\begin{array}{l}\pi'(x) := \exists p.\psi(x,p) \with \neg\psi(\overline{\ulcor
 \end{frame}
 
 \begin{frame}{Первая теорема Гёделя о неполноте ещё раз}
-\begin{lmm}Лемма об автоссылках. Для любой формулы $\phi(x_1)$ можно построить 
+\begin{lmm}[об автоссылках]
+Для любой формулы $\phi(x_1)$ можно построить 
 такую замкнутую формулу $\alpha$ (не использующую неаксиоматических предикатных
 и функциональных символов), что $\vdash \phi(\overline{\ulcorner\alpha\urcorner}) \leftrightarrow \alpha$.
 \end{lmm}
