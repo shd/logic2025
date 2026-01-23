@@ -586,9 +586,9 @@ $$\begin{array}{l}\exists b. \exists c. (\exists a_0. \hat{\beta} (b,c,0,a_0) \&
 \begin{frame}{Проверка доказательства на корректность}
 \begin{thm}Следующая функция рекурсивна:
 $$\text{proof}(f,x_1,x_2,\dots,x_n,y,p) = \left\{\begin{array}{ll} 
-0, & \mbox{если} \vdash\phi(\overline{x_1},\overline{x_2},\dots,\overline{x_n},\overline{y}),\\
+1, & \mbox{если} \vdash\phi(\overline{x_1},\overline{x_2},\dots,\overline{x_n},\overline{y}),\\
    & p \mbox{ --- гёделев номер вывода}, f = \ulcorner\phi\urcorner \\ 
-1, & \mbox{иначе}
+0, & \mbox{иначе}
 \end{array}\right.$$\vspace{-0.1cm}\pause
 \end{thm}
 \begin{proof}[Идея доказательства]
