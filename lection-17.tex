@@ -1,0 +1,380 @@
+\documentclass[aspectratio=169,dvipsnames,usenames]{beamer}
+\usepackage{graphicx}
+\usepackage{stmaryrd}
+\usepackage[T1,T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{verbatim}
+\usepackage{amsthm}
+%\usepackage{bnf}
+\usepackage{cmll}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{mathtext}
+\usepackage{mathtools}
+\usepackage{mathabx}
+%\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage{proof}
+%\usepackage{paracol}
+%\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{colortbl}
+%\usepackage{minted}
+%\usepackage{hyperref}
+\setbeamertemplate{navigation symbols}{}
+\usetikzlibrary{graphs}
+\usetikzlibrary{graphs.standard}
+\usetikzlibrary{automata,positioning}
+\usepackage{float}
+
+\begin{document}
+
+%\theoremstyle{dfn}
+\newtheorem{dfn}{Определение}[section]
+\newtheorem{nte}{Замечание}[section]
+
+\newtheorem{axiom}{Аксиома}[section]
+\newtheorem{thm}{Теорема}[section]
+\newtheorem{lmm}[theorem]{Лемма}
+\newtheorem{statement}{Утверждение}[section]
+\newtheorem{oun_paragraph}{Пункт}[section]
+\newtheorem{cons}{Следствие}[section]
+\newtheorem*{exm}{Пример}
+
+\newcommand{\comb}[1]{\operatorname{\mathcal{#1}}}
+\newcommand{\func}[1]{\operatorname{#1}}
+\newcommand{\reduction}[1]{{\color{OrangeRed}#1}}
+\newcommand{\set}[1]{\left\{#1\right\}}
+
+\def\from#1{\par \parbox{0.7\textwidth}{\par \hfill\raggedleft \it #1}} 
+
+\begin{frame}{}
+\begin{center}
+{\LARGE Линейная темпоральная логика\\Проверка свойств на моделях (model checking)}
+\end{center}
+\end{frame}
+
+\begin{frame}{Модальные логики}
+\begin{itemize}
+\item Модальность (лат. modus — способ, вид) — способ, вид бытия или события; 
+категории модальности: возможность, действительность, необходимость.
+
+\item Расширяем язык: как бы выразить <<модальности>>?
+\emph{Всегда} зимой идёт снег. Дождь \emph{может} идти при солнечном свете.
+
+\item Модифицируем язык, модифицируем аксиоматику, модифицируем теорию моделей.
+\item Язык предполагает включение новых связок, самые типичные:
+\begin{tabular}{ll}
+$\Box$ & необходимость (necessity)\\
+$\Diamond$ & возможность (possibility)
+\end{tabular}
+
+\item Интуитивный смысл связок примерно понятен, конкретный смысл формализуется
+в конкретной теории.
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Некоторые модальные исчисления (обзор)}
+Терминология введена Кларенсом Льюисом и Купером Лангфордом в 1932 году.
+\begin{itemize}
+\item Минимальная модальная логика (K) строится поверх ИВ:
+$$\text{Аксиомы ИВ}\quad\quad\Box(\varphi\rightarrow\psi)\rightarrow(\Box\varphi\rightarrow\Box\psi)
+\quad\quad\infer{\psi}{\varphi\quad\varphi\rightarrow\psi}\quad\quad\infer{\Box\varphi}{\varphi}$$
+
+\item K4: K и дополнительная аксиома транзитивности  $\Box\varphi \rightarrow \Box\Box\varphi$;
+\item T: K и дополнительная аксиома рефлексивности $\Box\varphi \rightarrow \varphi$;
+\item S4: K4 + T;
+\item S5: T и аксиома $\Diamond\varphi\rightarrow\Box\Diamond\varphi$
+(<<если что-то возможно, то оно обязательно реализуется в каком-то мире>>).
+Например, утверждение <<если Бог возможен, то он необходимо существует>>
+можно формализовать и доказать в S5.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Теория моделей}
+\begin{itemize}
+\item Много разных --- например, топологические интерпретации (как и в ИИВ).
+\item Наш интерес сегодня --- интерпретации на многих мирах (Саул Крипке), где
+миры упорядочены некоторым отношением. Тогда интуитивный смысл связок:
+$\Box$ --- истинно во всех достижимых мирах, $\Diamond$ --- истинно
+в каком-то достижимом мире. Можем указывать конкретный мир $W$:
+
+$$W \models \Box A$$
+
+\item Скажем, следующее выполнено в интуиционистских моделях: %$W\Vdash\varphi$, если...
+
+$$W\models X\rightarrow\Box X\quad\quad W\models(\alpha\rightarrow\beta) \rightarrow (\Box (\alpha\rightarrow\beta))
+\quad\quad W\models\neg\alpha\rightarrow\neg\Diamond\alpha$$
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Линейная темпоральная логика}
+\begin{itemize}
+\item Темпоральная логика: множественные миры (в стиле моделей Крипке) понимаются как 
+расположенные в соответствии с течением времени.
+\item Линейная темпоральная логика: миры выстроены в линейном порядке.
+\item Используем следующие связки:
+\begin{enumerate}
+\item $\mathcal{G}(\alpha)$ или $\Box\alpha$: утверждение $\alpha$ выполнено в любой момент (начиная с текущего).
+\item $\mathcal{P}(\alpha)$ или $\bigcirc\alpha$: утверждение $\alpha$ выполнено в следующий момент.
+\item $\mathcal{E}(\alpha)$ или $\Diamond\alpha$: утверждение $\alpha$ неизбежно выполнено в будущем, в какой-то момент (начиная с текущего).
+\item $\mathcal{U}(\alpha,\beta)$ или $\alpha\mathcal{U}\beta$: утверждение $\alpha$ истинно, пока $\beta$ не станет истинным,
+после чего $\alpha$ может быть любым.
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Представление моделей ЛТЛ как множества слов}
+
+$$W(\varphi) = \{\sigma\in (\mathcal{P}(a))^\omega\ |\ \sigma\models\varphi \}$$
+На строке $\sigma = S_0S_1S_2\dots$ (каждый $S_i \subseteq \mathcal{P}(a)$) истинность задаётся так:
+$$\begin{array}{ll}
+\sigma\models\top & \text{всегда}\\
+\sigma\models a & a \in S_0\\
+\sigma\models \varphi_1 \with \varphi_2 & \sigma\models\varphi_1 \text{ и } \sigma\models\varphi_2\\
+\sigma\models\neg\varphi & \sigma\not\models\varphi\\
+\sigma\models\bigcirc\varphi & \sigma[1\dots]\models\varphi\\
+\sigma\models\varphi_1\mathcal{U}\varphi_2 & \text{существует }j.\sigma[j\dots]\models\varphi_2 \text{ и при всех }i, 0 \le i < j. \sigma[i\dots]\models\varphi_1
+\end{array}$$
+\end{frame}
+
+\begin{frame}{Выразимость связок, другие формулы}
+Будем рассматривать следующую грамматику для формул: 
+$$\varphi ::= \top\ |\ a\ |\ \varphi\with\varphi\ |\ \neg\varphi\ |\ \bigcirc\varphi\ |\ \varphi\mathcal{U}\varphi$$
+поскольку остальные связки выражаются через эти. 
+
+В самом деле, имеем следующие тождества:
+\begin{itemize}
+\item Связки выражаются друг через друга:
+\begin{itemize}
+\item $\Box\alpha = \neg\Diamond\neg\alpha$
+\item $\Diamond\alpha = \top \mathcal{U} \alpha$
+\end{itemize}
+\item Правила двойственности:
+\begin{itemize}
+\item $\neg\bigcirc\varphi=\bigcirc\neg\varphi$
+\item $\neg\Diamond\varphi = \Box\neg\varphi$
+\item $\neg\Box\varphi = \Diamond\neg\varphi$
+\end{itemize}
+\item Правила расширения:
+\begin{itemize}
+\item $\varphi\mathcal{U}\psi = \psi \vee (\varphi \with \bigcirc (\varphi \mathcal{U} \psi))$
+\item $\Diamond \varphi = \varphi \vee \bigcirc \Diamond \varphi$
+\item $\Box \varphi = \varphi \with \bigcirc \Box \varphi$
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Задача проверки программы на моделях}
+\begin{itemize}
+\item Проверить многопоточный алгоритм/протокол --- как?
+\item Первоначальная идея: Сlarke E., Emerson E., Sistla A., Automatic veriﬁcation of ﬁnite-state 
+concurrent systems using temporal logic speciﬁcations 
+1986.
+\item Опишем состояние некоторым набором (булевских) переменных.
+Программа задаёт набор допустимых переходов между состояниями.
+\item Запишем условие (которое желаем проверить) как формулу ЛТЛ.
+\item Научимся проверять выполнимость формулы на данном множестве состояний.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Постановка задачи}
+\begin{dfn}Системой переходов назовём граф состояний, в котором каждое состояние отражает
+содержимое памяти компьютера, а переходы соответствуют инструкциям (операциям), выполняемым
+компьютером\end{dfn}
+
+Хотим научиться проверять, выполнено ли $\varphi$ при всех возможных вариантах выполнения программы,
+то есть при всех возможных путях в системе переходов $TS$:
+
+$$TS \models \varphi$$
+
+Очевидно, $TS$ задаёт некоторое множество (бесконечных) строк в алфавите $2^{FV(\varphi)}$.
+Находится ли в этом множестве строка, удовлетворяющая $\varphi$?
+\end{frame}
+
+\begin{frame}{Недетерминированные (обобщённые) автоматы Бюхи}
+\begin{dfn}
+НАБ (НОАБ) определяется внешним алфавитом $A$, множествами состояний $Q$, функцией переходов 
+$\delta: A\times Q \rightarrow \mathcal{P}(Q)$ и семейством допускающих множеств состояний
+$\mathcal{F} \subseteq \mathcal{P}(Q)$.
+
+Бесконечная строка $\alpha = a_0a_1a_2\dots$ допускается недетерминированным (обобщённым) автоматом Бюхи, 
+если найдётся такая последовательность состояний $q_0q_1q_2\dots$, что
+$q_{n+1}\in\delta(a_n,q_n)$ и в процессе применения автомата к ней каждое из множеств допускающих 
+состояний будет 
+посещено бесконечное количество раз.
+
+
+\vspace{-0.5cm}
+$$\forall F\in\mathcal{F}.\forall n\in\mathbb{N}.\exists m > n.q_m\in F$$
+\vspace{-0.5cm}
+
+В случае $|\mathcal{F}| \le 1$ такой автомат --- НАБ, иначе --- НОАБ.
+\end{dfn}
+\end{frame}
+
+\begin{frame}{Пример обобщённого недетерминированного автомата Бюхи}
+\begin{exm}
+Рассмотрим автомат с двумя состояниями (0,1), начальным состоянием 0, и $\mathcal{F} = \{\{0\},\{1\}\}$.
+
+\begin{tikzpicture}[->,shorten >=1pt,auto,node distance=2.8cm,
+                    semithick]
+  \tikzstyle{vertex}=[draw,text=black]
+
+  \node[vertex,double,circle] (S) {$0$};
+  \node[vertex,double,circle] (E) [right of=S] {$1$};
+  \node (EE) [right of=E] {};
+
+  \draw [<-] (S) to node[auto] {} ++ (-1,0);
+  \path %(S) edge   node  {$\varepsilon$}(A)
+        (E) edge  [bend right=40] node [swap] {$b$}(S)
+        (S) edge  [bend right=40] node [swap] {$a$}(E);
+  \draw (E) to [out=375,in=345,looseness=8] node [above] {$b$} (E);
+        %(Operations) to[out=-80, in=-90,looseness=2] (here)    to[out=90,in=80,looseness=2] (Operations);
+        %(A) edge   node  {$\varepsilon$}(E);
+\end{tikzpicture}
+
+Строка $(ab)^\omega$ будет принята, строка $a(b^\omega)$ --- нет.
+\end{exm}
+\end{frame}
+
+\begin{frame}{Строим автомат Бюхи для формулы: состояния}
+\begin{itemize}
+\item Раскроем сокращения записи (выразим $\Box$, $\vee$, $\rightarrow$ и $\Diamond$ через другие связки).
+\item Рассмотрим $\mathcal{B}(\varphi)$ --- семейство всех подформул $\varphi$ (и их отрицаний,
+с учётом $\varphi = \neg\neg\varphi$), 
+образующих непротиворечивое максимальное множество. Скажем, для $a\vee\neg b$ это будет
+$\{\{\neg a,\neg b,a\vee\neg b\},\{a,\neg b,a \vee\neg b\},
+\{\neg a,b,\neg(a\vee\neg b)\},\{a,b,a\vee\neg b\}\}$
+\item Поскольку множество содержит модальные операторы, непротиворечивость также должна
+соответствовать условиям реализуемости: при рассмотрении подформулы $\varphi\mathcal{U}\psi$ должно быть
+$$\psi\in B \Rightarrow \varphi\mathcal{U}\psi \in B\quad\quad
+  \varphi\mathcal{U}\psi \in B \text{ и }\psi \notin B \Rightarrow \varphi \in B$$
+%$$\varphi\mathcal{U}\psi = \psi\vee(\varphi\wedge\bigcirc(\varphi\mathcal{U}\psi))$$
+\item Состояния автомата --- $B_n \in \mathcal{B}(\varphi)$.
+\item Стрелки подписаны состоянием переменных $A$, и их может быть несколько одинаково
+подписанных, поскольку в силу модального характера значение формулы не исчерпывается 
+значением переменных.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Строим автомат Бюхи для формулы: переходы}
+Рассмотрим состояние $B$ и набор переменных $A \in \mathcal{P}(FV(\varphi))$.
+\begin{itemize}
+\item Рассмотрим $B': A = B\cup FV(\varphi)$ --- состояния, в которых
+пропозициональные переменные соответствуют ожидаемому набору переменных.
+\item Тогда $B' \in \delta(A,B)$, если и только если для каждого из $\psi\in B$
+выполнено одно из следующих условий:
+\begin{enumerate}
+\item 
+если $\psi$ --- не модальный оператор (здесь неявная рекурсия по структуре $\psi$), то $\psi\in B'$;
+\item если $\psi\equiv\bigcirc\varphi$, то $\varphi\in B'$;
+\item если $\psi \equiv \varphi_1\mathcal{U}\varphi_2$, то выполнен закон расширения для $\mathcal{U}$:
+\begin{itemize}
+\item либо $\varphi_2 \in B$ ($\mathcal{U}$ активирован в текущем состоянии).
+\item либо $\varphi_1 \in B$ и $\varphi_1 \mathcal{U} \varphi_2 \in B'$
+($\mathcal{U}$ будет активирован позже).
+\end{itemize}
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Строим автомат Бюхи для формулы: допускающие состояния}
+Автомат для формулы $\varphi$:
+
+$$\begin{array}{ll}Q &:= \mathcal{B}(\varphi) \\ Q_0 &:= \{ B\ |\ \varphi\in B, B\in Q\} \\
+F_{\psi_1\mathcal{U}\psi_2} &:= \{B\ |\ \psi_1\mathcal{U}\psi_2 \not\in B \text{ или } \psi_2\in B\}, \\
+\mathcal{F}&:=\{F_{\psi_1\mathcal{U}\psi_2}\}\end{array}$$
+
+Идея в том, что автомат окажется в допускающем состоянии относительно $\psi_1\mathcal{U}\psi_2$:
+\begin{itemize}
+\item либо, когда формула $\psi_1\mathcal{U}\psi_2$ не нужна для результата;
+\item либо в тот момент, когда соответствующая 
+формула $\psi_1\mathcal{U}\psi_2$ <<активируется>> --- оператор меняет фокус восприятия
+с ранее истинного $\psi_1$ на истинный $\psi_2$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Почему автомат Бюхи?}
+Напомним, обобщённый автомат Бюхи принимает строку, если все допускающие множества состояния 
+посещаются при обработке строки бесконечное количество раз. Соответственно:
+
+\begin{itemize}
+\item если автомат имеет $\mathcal{F} = \varnothing$, то он примет любую
+бесконечную последовательность переходов.
+\item если автомат построен для оператора $\mathcal{U}$, и оператор активируется
+на шаге $k$ в последний раз --- значит, на шаге $k+1$ и на последующих шагах
+данное выражение не будет истинным (для истинности $\varphi\mathcal{U}\psi$ требуется
+наличия момента активации в будущем).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Разрешимость задачи $TS \models \varphi$ в ЛТЛ}
+%\begin{thm}Если система переходов конечна и не содержит терминальных состояний, то
+%существует алгоритм, разрешающий данную задачу для любого $\varphi$. 
+%\end{thm}
+
+\begin{proof}[Идея алгоритма]
+\begin{enumerate}
+\item Построим обобщённый недетерминированный автомат Бюхи для формулы $\neg\varphi$
+(принимает последовательность исполнения тогда и только тогда, когда она 
+опровергает $\varphi$);
+\item построим недетерминированный автомат по системе переходов $TS$;
+\item построим их пересечение --- и преобразуем автомат в недетерминированный автомат Бюхи $T$
+(с множеством допускающих состояний $F$).
+\item проверим $\mathcal{L}_T = \varnothing$ (значит, $\varphi$ доказано), 
+либо найдём контрпример --- последовательность исполнения, имеющая цикл, затрагивающий
+состояние из $F$ (обход графа состояний; алгоритм заканчивается в силу конечности
+множества состояний);
+\item данная последовательность будет контрпримером к задаче $TS \models \varphi$.
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Пример реализации: SPIN}
+\begin{itemize}
+\item Один из первых инструментов (1991 год).
+\item Используется специальный язык для описания алгоритмов/протоколов (Promela).
+\item Язык позволяет формализовать параллельные вычисления.
+\item Программа может быть вычислена в разных окружениях (например, случайное исполнение).
+\item Также, к программе могут быть добавлены условия, которые либо будут доказаны --- либо
+будет найден контрпример (контрпример будет предъявлен).
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Пример программы на Promela: каковы возможные значения n?}
+\begin{verbatim}
+byte n = 0, ﬁnish = 0;
+active [2] proctype P() {
+    byte register, counter = 0;
+    do :: counter = 10 -> break
+       :: else ->
+             register = n;
+             register++;
+             n = register;
+             counter++
+    od;
+    ﬁnish++
+}
+active proctype WaitForFinish() {
+    ﬁnish == 2;
+    printf(“n = %d\n”, n)
+}
+\end{verbatim}
+\end{frame}
+
+%\begin{frame}{Сколько возможно ответов?}
+%\begin{itemize}
+%\pause\item На самом деле два.
+%\end{itemize}
+%\end{frame}
+%\begin{frame}{}
+%\end{frame}
+
+\end{document}
