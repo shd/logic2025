@@ -224,7 +224,7 @@ https://www.youtube.com/watch?v=YScIPA8RbVE
 + Просто-типизированное лямбда-исчисление, изоморфизм Карри-Ховарда
 + Комбинаторы, изоморфизм Карри-Ховарда для гильбертового исчисления
 ### Где почитать
-+ Morten Heine B. Sørensen, Pawel Urzyczyn: Lections on the Curry-Howard Isomorphism
++ Morten Heine B. Sørensen, Pawel Urzyczyn: Lectures on the Curry-Howard Isomorphism
 https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf
 
 ## Лекция 17
