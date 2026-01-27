@@ -193,7 +193,7 @@ $$\Gamma_{i+1} = \left\{\begin{array}{ll}\Gamma_i \cup \{\varphi_i\},& \mbox{ е
 \end{frame}
 
 \begin{frame}{Доказательство корректности}
-\begin{lmm}Пусть $\varphi$ --- бескванторная формула, тогда $\mathcal{M}\models\varphi$ тогда и только тогда, когда $\varphi\in M$.
+\begin{lmm}Пусть $\varphi$ --- замкнутая бескванторная формула, тогда $\mathcal{M}\models\varphi$ тогда и только тогда, когда $\varphi\in M$.
 \end{lmm}\pause
 
 \begin{proof}[Доказательство (индукция по длине формулы $\varphi$)]
@@ -287,7 +287,7 @@ $$\varphi ::= \forall x.\varphi\ |\ \exists x.\varphi\ |\ \tau$$
 \begin{itemize}
 \item Пусть $M$ --- полное непротиворечивое множество замкнутых формул с поверхностными кванторами (очевидно, счётное). \pause
  Построим семейство непротиворечивых множеств замкнутых формул $M_k$.\pause
-\item Пусть $d^k_i$ --- семейство \emph{свежих} констант, не встречающихся ни в одном $M_j$, где $j < k$.\pause
+\item Пусть $d^k_i$ --- семейство \emph{свежих} констант, в $M_{i-1}$ не встречающихся.\pause
 \item Индуктивно построим $M_k$:
 \begin{itemize}
 \item База: $M_0 = M$\pause
@@ -414,7 +414,7 @@ $W$
 \end{flw}
 \begin{proof}
 \begin{itemize}
-\item Пусть это не так, и существует формула $\varphi$, что $\models\varphi$, но $\not\vdash\varphi$.\pause
+\item Пусть это не так, и существует замкнутая формула $\varphi$, что $\models\varphi$, но $\not\vdash\varphi$.\pause
 \item Тогда рассмотрим $M = \{\neg\varphi\}$. \pause
 \item $M$ непротиворечиво: если $\neg\varphi \vdash A\with\neg A$, то $\vdash \varphi$ (упражнение).\pause
 \item Значит, у $M$ есть модель $\mathcal{M}$, и $\mathcal{M}\models\neg\varphi$. \pause
