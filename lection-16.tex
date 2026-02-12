@@ -260,8 +260,8 @@ $$Y\ N =_\beta (\lambda x.N\ ({\color{red}x}\ {\color{blue}x}))\ (\lambda x.N\ (
 \item Правила удаления связок:\\$\infer{\Gamma\vdash\beta}{\Gamma\vdash\alpha\quad\Gamma\vdash\alpha\rightarrow\beta}\quad\quad\infer{\Gamma\vdash\gamma}{\Gamma\vdash\alpha\rightarrow\gamma\quad\Gamma\vdash\beta\rightarrow\gamma\quad\Gamma\vdash\alpha\vee\beta}$
  $\infer{\Gamma\vdash\alpha}{\Gamma\vdash\alpha\with\beta}\quad\quad\infer{\Gamma\vdash\beta}{\Gamma\vdash\alpha\with\beta}\quad\quad\infer{\Gamma\vdash\alpha}{\Gamma\vdash\bot}$
 \item Пример доказательства:\vspace{-0.3cm}
-$$\infer[(\text{введ}\with)]{A\with B\vdash B \with A}{\infer[(\text{удал}\with)]{A \with B \vdash B}{\infer[(\text{акс.})]{A \with B\vdash A \with B}{}}
-                                           \quad\quad\infer[(\text{удал}\with)]{A \with B \vdash A}{\infer[(\text{акс.})]{A \with B\vdash A \with B}{}}}$$
+$$\infer[(\text{введ.}\with)]{A\with B\vdash B \with A}{\infer[(\text{удал.}\with)]{A \with B \vdash B}{\infer[(\text{акс.})]{A \with B\vdash A \with B}{}}
+                                           \quad\quad\infer[(\text{удал.}\with)]{A \with B \vdash A}{\infer[(\text{акс.})]{A \with B\vdash A \with B}{}}}$$
 \end{itemize}
 \end{frame}
 
@@ -277,7 +277,7 @@ $$\infer[(\text{введ}\with)]{A\with B\vdash B \with A}{\infer[(\text{уда�
 %\begin{proof}Индукция по структуре\end{proof}
 %\end{frame}
 
-\begin{frame}{Просто-типизированное лямбда-исчисление}
+\begin{frame}{Просто типизированное лямбда-исчисление}
 \begin{dfn}Импликационный фрагмент интуиционистской логики:
 
 $$\infer{\Gamma,\varphi \vdash_\rightarrow \varphi}{} \quad\quad 
@@ -330,9 +330,9 @@ $$\infer{\Gamma\vdash\varphi\rightarrow\psi}{\Gamma,\varphi\vdash\psi}$$
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Просто-типизированное лямбда-исчисление}
+\begin{frame}{Просто типизированное лямбда-исчисление}
 \begin{dfn}
-Просто-типизированное лямбда-исчисление (по Карри). \pause Типы: $\tau ::= \alpha | (\tau\rightarrow\tau)$. \pause Язык: $\Gamma\vdash A:\varphi$
+Просто типизированное лямбда-исчисление (по Карри). \pause Типы: $\tau ::= \alpha | (\tau\rightarrow\tau)$. \pause Язык: $\Gamma\vdash A:\varphi$
 $$\infer[x \notin \Gamma]{\Gamma,x:\varphi \vdash x:\varphi}{} \quad\quad 
   \infer[x \notin \Gamma]{\Gamma\vdash \lambda x.A: \varphi\rightarrow\psi}{\Gamma,x:\varphi\vdash A:\psi} \quad\quad 
   \infer{\Gamma\vdash B A:\psi}{\Gamma\vdash A:\varphi\quad\quad\Gamma\vdash B:\varphi\rightarrow\psi}$$
@@ -393,7 +393,7 @@ $$\infer[\lambda]{\lambda f^{\alpha\rightarrow\beta}.\lambda n^{\beta\rightarrow
 \begin{itemize}
 \item $M: \alpha\vee\neg\alpha$ предполагает наличие атомарной конструкции (поскольку $\alpha\vee\neg\alpha$ недоказуемо в ИИВ).
 \item Какая у $M$ могла бы быть семантика? $\alpha\vee\neg\alpha$ --- это алгебраический тип вида $$\tau = \texttt{Left }\alpha\ |\ \texttt{Right }\alpha\rightarrow\bot$$
-\item Доказать $E:\tau$ можно только, предложив либо $L: \alpha$, либо $R : \alpha\rightarrow\bot$ (и мы должны знать, что именно --- вспомним
+\item Доказать $E:\tau$ можно только предложив либо $L: \alpha$, либо $R : \alpha\rightarrow\bot$ (и мы должны знать, что именно --- вспомним
 BHK-интерпретацию).
 %\item Ложь недоказуема в ИИВ и ИИП (мы надеемся), поэтому нет $E$, что $\vdash E:\bot$. 
 %То есть, $R$ должна показывать невозможность построения типа $\alpha$.
@@ -414,12 +414,12 @@ $$\texttt{callcc}: \forall\alpha.\forall\beta.((\alpha\rightarrow\beta)\rightarr
 
 \begin{frame}{Исчисление по Чёрчу и по Карри}
 \begin{dfn}
-Просто-типизированное лямбда-исчисление по Карри.
+Просто типизированное лямбда-исчисление по Карри.
 $$\infer[x \notin \Gamma]{\Gamma,x:\varphi \vdash x:\varphi}{} \quad\quad 
   \infer[x \notin \Gamma]{\Gamma\vdash \lambda x.A: \varphi\rightarrow\psi}{\Gamma,x:\varphi\vdash A:\psi} \quad\quad 
   \infer{\Gamma\vdash B A:\psi}{\Gamma\vdash A:\varphi\quad\quad\Gamma\vdash B:\varphi\rightarrow\psi}$$
 
-Просто-типизированное лямбда-исчисление по Чёрчу. 
+Просто типизированное лямбда-исчисление по Чёрчу. 
 $$\infer[x \notin \Gamma]{\Gamma,x:\varphi \vdash x:\varphi}{} \quad\quad 
   \infer[x \notin \Gamma]{\Gamma\vdash \lambda x^{\color{blue}\varphi}.A: \varphi\rightarrow\psi}{\Gamma,x:\varphi\vdash A:\psi} \quad\quad 
   \infer{\Gamma\vdash B A:\psi}{\Gamma\vdash A:\varphi\quad\quad\Gamma\vdash B:\varphi\rightarrow\psi}$$
@@ -441,7 +441,7 @@ $\lambda f.\lambda x.f\ (f\ x) : (\beta\rightarrow\beta)\rightarrow(\beta\righta
 \begin{frame}{Комбинаторы S,K}
 \begin{dfn}Комбинатор --- лямбда-терм без свободных переменных
 \end{dfn}
-\begin{dfn}[исходная идея Моисея Шейнфинкеля, 1924]$S := \lambda x.\lambda y.\lambda z.x\ z\ (y\ z)$, $K := \lambda x.\lambda y.x$, $I := \lambda x.x$\\
+\begin{dfn}[исходная идея Моисея Шейнфинкеля, 1920]$S := \lambda x.\lambda y.\lambda z.x\ z\ (y\ z)$, $K := \lambda x.\lambda y.x$, $I := \lambda x.x$\\
 (verSchmelzung, Konstanz --- исходно <<C>> у Шейнфинкеля, Identit\"at)
 \end{dfn}
 
